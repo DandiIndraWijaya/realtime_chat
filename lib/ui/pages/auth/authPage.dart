@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
+import 'package:realtime_chat/ui/pages/contacts/contactsPage.dart';
 
-class Auth extends StatelessWidget {
-  const Auth({Key? key}) : super(key: key);
+class AuthPage extends StatelessWidget {
+  const AuthPage({Key? key}) : super(key: key);
+  final routeName = '/auth';
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,8 @@ class Auth extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               primary: kWhiteColor, padding: const EdgeInsets.all(10)),
-          onPressed: () => {},
+          onPressed: () =>
+              Get.to(() => const ContactsPage(), transition: Transition.zoom),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -30,7 +34,7 @@ class Auth extends StatelessWidget {
               ),
               Text(
                 'Sign in with Google',
-                style: TextStyle(color: kGreyColor),
+                style: greyTextStyle.copyWith(fontWeight: medium),
               )
             ],
           ),
