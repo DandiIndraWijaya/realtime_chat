@@ -1,17 +1,18 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class ChatPage extends StatelessWidget {
   ChatPage({Key? key}) : super(key: key);
   final argumentData = Get.arguments;
   final routName = '/chat';
 
-  Widget sentChat() {
-    String message =
-        'Lorem ipsum fdsper repyepr ewprewprw rewpep reyp r8 reprp ffdfd fdfsdfsf fefefed';
+  final ScrollController _scrollController = ScrollController();
 
+  Widget sentChat(message) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -38,8 +39,7 @@ class ChatPage extends StatelessWidget {
                         child: Column(children: [
                           Text(
                             message,
-                            style: blackTextStyle.copyWith(
-                                height: 1.6, fontSize: 16),
+                            style: blackTextStyle.copyWith(fontSize: 16),
                           ),
                           Container(
                             alignment: Alignment.bottomRight,
@@ -53,6 +53,7 @@ class ChatPage extends StatelessWidget {
                           )
                         ]),
                         decoration: BoxDecoration(
+                            border: Border.all(color: kBGGreyColor),
                             borderRadius: BorderRadius.circular(10),
                             color: kBGBlueColor),
                       ),
@@ -71,10 +72,7 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  Widget receivedChat() {
-    String message =
-        'Lorem ipsum fdsper repyepr ewprewprw rewpep reyp r8 reprp ffdfd fdfsdfsf fefefed';
-
+  Widget receivedChat(message) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -94,8 +92,7 @@ class ChatPage extends StatelessWidget {
                         child: Column(children: [
                           Text(
                             message,
-                            style: blackTextStyle.copyWith(
-                                height: 1.6, fontSize: 16),
+                            style: blackTextStyle.copyWith(fontSize: 16),
                           ),
                           Container(
                             alignment: Alignment.bottomRight,
@@ -109,6 +106,7 @@ class ChatPage extends StatelessWidget {
                           )
                         ]),
                         decoration: BoxDecoration(
+                            border: Border.all(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(10),
                             color: kBGGreyColor),
                       ),
@@ -134,8 +132,35 @@ class ChatPage extends StatelessWidget {
     );
   }
 
+  var chats = [
+    {
+      "tipe": "sent",
+      "message":
+          "Assalamu'alaikum warahmatullahi pak alamsyah. saya Dandi Indra Wijaya Mengenai skripsi saya yang sudah saya revisi, apa hari ini saya bisa bertemu dengan pak alamsyah di kampus untuk membahas revisi skripsi ini pak? Terima kasih."
+    },
+    {
+      "tipe": "sent",
+      "message":
+          "Assalamu'alaikum warahmatullahi pak alamsyah. saya Dandi Indra Wijaya Mengenai skripsi saya yang sudah saya revisi, apa hari ini saya bisa bertemu dengan pak alamsyah di kampus untuk membahas revisi skripsi ini pak? Terima kasih."
+    },
+    {
+      "tipe": "received",
+      "message":
+          "Assalamu'alaikum warahmatullahi pak alamsyah. saya Dandi Indra Wijaya Mengenai skripsi saya yang sudah saya revisi, apa hari ini saya bisa bertemu dengan pak alamsyah di kampus untuk membahas revisi skripsi ini pak? Terima kasih."
+    },
+    {
+      "tipe": "received",
+      "message":
+          "Assalamu'alaikum warahmatullahi pak alamsyah. saya Dandi Indra Wijaya Mengenai skripsi saya yang sudah saya revisi, apa hari ini saya bisa bertemu dengan pak alamsyah di kampus untuk membahas revisi skripsi ini pak? Terima kasih."
+    }
+  ];
   @override
   Widget build(BuildContext context) {
+    Timer(
+        const Duration(milliseconds: 100),
+        () => _scrollController
+            .jumpTo(_scrollController.position.maxScrollExtent));
+
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
@@ -143,27 +168,35 @@ class ChatPage extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: true,
         titleSpacing: 0,
-        title: const Text('Claire'),
+        title: Row(children: [
+          const Text('Claire'),
+          const Text(' is typing'),
+          AnimatedTextKit(
+            animatedTexts: [
+              TyperAnimatedText(
+                '...',
+                speed: const Duration(milliseconds: 200),
+              ),
+            ],
+            repeatForever: true,
+          )
+        ]),
       ),
       body: SingleChildScrollView(
           // alignment: Alignment.bottomCenter,
           child: Column(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height - 150,
-            child: ListView(
-              children: [
-                sentChat(),
-                sentChat(),
-                receivedChat(),
-                sentChat(),
-                sentChat(),
-                receivedChat(),
-                sentChat(),
-                sentChat(),
-                receivedChat(),
-              ],
-            ),
+            child: ListView.builder(
+                controller: _scrollController,
+                itemCount: chats.length,
+                itemBuilder: (context, index) {
+                  if (chats[index]["tipe"] == "sent") {
+                    return sentChat(chats[index]["message"]);
+                  }
+                  return receivedChat(chats[index]["message"]);
+                }),
           ),
           Container(
             padding: const EdgeInsets.all(10),
@@ -199,7 +232,9 @@ class ChatPage extends StatelessWidget {
                       color: kPrimaryColor),
                   child: IconButton(
                       color: kWhiteColor,
-                      onPressed: () {},
+                      onPressed: () {
+                        print('Send button pressed');
+                      },
                       icon: const Icon(Icons.send)),
                 ),
               )
