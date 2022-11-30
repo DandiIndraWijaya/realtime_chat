@@ -4,8 +4,13 @@ import 'package:realtime_chat/shared/theme.dart';
 import 'package:realtime_chat/ui/pages/auth/authPage.dart';
 import 'package:realtime_chat/ui/pages/chat/chatPage.dart';
 import 'package:realtime_chat/ui/pages/contacts/contactsPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,12 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: const AuthPage().routeName,
+      initialRoute: AuthPage().routeName,
       getPages: [
-        GetPage(name: const AuthPage().routeName, page: () => const AuthPage()),
-        GetPage(
-            name: const ContactsPage().routeName,
-            page: () => const ContactsPage()),
+        GetPage(name: AuthPage().routeName, page: () => AuthPage()),
+        GetPage(name: ContactsPage().routeName, page: () => ContactsPage()),
         GetPage(name: ChatPage().routName, page: () => ChatPage())
       ],
     );

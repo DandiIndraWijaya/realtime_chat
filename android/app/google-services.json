@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "938932992134",
+    "project_id": "realtime-chat-17561",
+    "storage_bucket": "realtime-chat-17561.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938932992134:android:5dd53083a8a7f905a37907",
+        "android_client_info": {
+          "package_name": "com.dandiindra.realtime_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938932992134-of2q6mv79l1je31df8e5dll0ilh0hm37.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dandiindra.realtime_chat",
+            "certificate_hash": "7b8ededd76fb33c8f7955681b66d7fd6f288cccf"
+          }
+        },
+        {
+          "client_id": "938932992134-a7du7kvvs3mt35bcqej33ld34kp6tfc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1wY_SGBhA6r_A-B4mWZ-XgO2tqIrISWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938932992134-a7du7kvvs3mt35bcqej33ld34kp6tfc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

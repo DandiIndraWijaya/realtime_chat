@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
+import 'package:realtime_chat/ui/pages/auth/authController.dart';
 import 'package:realtime_chat/ui/pages/contacts/contactsPage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:realtime_chat/services/firebase_service.dart';
+
+// GoogleSignIn _googleSignIn = GoogleSignIn(
+//   scopes: <String>[
+//     'email',
+//     'https://www.googleapis.com/auth/contacts.readonly',
+//   ],
+// );
 
 class AuthPage extends StatelessWidget {
-  const AuthPage({Key? key}) : super(key: key);
   final routeName = '/auth';
+
+  final authController = AuthController();
+
+  Future<void> _handleSignIn() async {
+    try {
+      await FirebaseService().googleSignIn();
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +36,9 @@ class AuthPage extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               primary: kWhiteColor, padding: const EdgeInsets.all(10)),
-          onPressed: () =>
-              Get.to(() => const ContactsPage(), transition: Transition.zoom),
+          onPressed: () {
+            authController.handleGoogleSignIn();
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

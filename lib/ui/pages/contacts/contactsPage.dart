@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
 import 'package:realtime_chat/ui/pages/chat/chatPage.dart';
+import 'package:realtime_chat/ui/pages/contacts/contacsPageController.dart';
 
 class ContactsPage extends StatelessWidget {
-  const ContactsPage({Key? key}) : super(key: key);
   final routeName = '/contacts';
+
+  final contactsPageController = ContactsPageController();
 
   Widget contactTile() {
     return InkWell(
@@ -79,12 +81,15 @@ class ContactsPage extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Dandi'),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
-            ]),
+        title:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text('Dandi'),
+          IconButton(
+              onPressed: () {
+                contactsPageController.signOut();
+              },
+              icon: const Icon(Icons.logout))
+        ]),
       ),
       body: ListView(
         children: [

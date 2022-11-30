@@ -38,6 +38,14 @@ dependencies:
   google_fonts: ^3.0.1
   flutter_svg: ^1.0.3
   animated_text_kit: ^4.2.1
+  firebase_core: ^2.3.0
+  google_sign_in: ^5.4.2
+  firebase_auth: ^4.1.4
+  firebase_auth_platform_interface: ^6.11.3
+  # firebase_auth: ^0.6.2+1
+
+dependency_overrides:
+  collection: ^1.16.0
 
 dev_dependencies:
   flutter_test:
