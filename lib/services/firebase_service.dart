@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:realtime_chat/models/user_model.dart';
 
 class FirebaseService {
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   GoogleSignInAccount? _user;
 
@@ -20,6 +20,18 @@ class FirebaseService {
 
     return UserModel(
         email: _user!.email, name: _user!.email, token: googleAuth.idToken);
+  }
+
+  Future checkGoogleSign() async {
+    final _user = FirebaseAuth.instance.currentUser;
+    if (_user == null) {
+      return UserModel();
+    }
+
+    final googleUser = await _googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    return UserModel(
+        email: _user.email, name: _user.displayName, token: googleAuth.idToken);
   }
 
   Future googleSignOut() async {

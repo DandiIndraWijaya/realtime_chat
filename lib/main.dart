@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
-import 'package:realtime_chat/ui/pages/auth/authPage.dart';
-import 'package:realtime_chat/ui/pages/chat/chatPage.dart';
-import 'package:realtime_chat/ui/pages/contacts/contactsPage.dart';
+import 'package:realtime_chat/ui/pages/auth/auth_page.dart';
+import 'package:realtime_chat/ui/pages/chat/chat_page.dart';
+import 'package:realtime_chat/ui/pages/contacts/contacts_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

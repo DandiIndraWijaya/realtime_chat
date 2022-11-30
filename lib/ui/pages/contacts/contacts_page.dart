@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/shared/theme.dart';
 import 'package:realtime_chat/ui/pages/chat/chatPage.dart';
-import 'package:realtime_chat/ui/pages/contacts/contacsPageController.dart';
+import 'package:realtime_chat/ui/pages/contacts/contacts_page_controller.dart';
 
 class ContactsPage extends StatelessWidget {
   final routeName = '/contacts';
