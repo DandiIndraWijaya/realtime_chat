@@ -8,6 +8,7 @@ import 'package:realtime_chat/ui/pages/contacts/contacts_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
+  bool isLoading = true;
   @override
   void onInit() async {
     checkSignIn();
@@ -19,6 +20,9 @@ class AuthController extends GetxController {
     var user = prefs.getString('user');
     if (user != null) {
       Get.off(() => ContactsPage(), transition: Transition.zoom);
+    } else {
+      isLoading = false;
+      update();
     }
   }
 
@@ -33,7 +37,7 @@ class AuthController extends GetxController {
             "user",
             json.encode(
                 {"name": user.name, "email": user.email, "token": user.token}));
-        Get.to(() => ContactsPage(), transition: Transition.zoom);
+        Get.off(() => ContactsPage(), transition: Transition.zoom);
       } else {
         Get.snackbar(
           "Can't Login",
