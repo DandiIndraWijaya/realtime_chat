@@ -19,7 +19,9 @@ class FirebaseService {
     await FirebaseAuth.instance.signInWithCredential(credential);
 
     return UserModel(
-        email: _user!.email, name: _user!.email, token: googleAuth.idToken);
+        email: _user!.email.toString(),
+        name: _user!.displayName.toString(),
+        token: googleAuth.idToken.toString());
   }
 
   Future checkGoogleSign() async {
@@ -31,7 +33,9 @@ class FirebaseService {
     final googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser!.authentication;
     return UserModel(
-        email: _user.email, name: _user.displayName, token: googleAuth.idToken);
+        email: _user.email.toString(),
+        name: _user.displayName.toString(),
+        token: googleAuth.idToken.toString());
   }
 
   Future googleSignOut() async {

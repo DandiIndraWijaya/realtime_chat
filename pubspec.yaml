@@ -43,6 +43,7 @@ dependencies:
   firebase_auth: ^4.1.4
   firebase_auth_platform_interface: ^6.11.3
   shared_preferences: ^2.0.15
+  cloud_firestore: ^4.1.0
   # firebase_auth: ^0.6.2+1
 
 dependency_overrides:
