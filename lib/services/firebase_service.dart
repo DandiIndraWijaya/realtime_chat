@@ -10,7 +10,11 @@ class FirebaseService {
   Future<UserModel> googleSignIn() async {
     final googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
-      return UserModel();
+      return UserModel(
+        groupCode: '',
+        name: '',
+        email: '',
+      );
     }
     _user = googleUser;
     final googleAuth = await googleUser.authentication;
@@ -19,20 +23,30 @@ class FirebaseService {
     await FirebaseAuth.instance.signInWithCredential(credential);
 
     return UserModel(
+        groupCode: '',
         email: _user!.email.toString(),
         name: _user!.displayName.toString(),
+        profilePicture: _user!.photoUrl.toString(),
+        isSuspended: false,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
         token: googleAuth.idToken.toString());
   }
 
   Future checkGoogleSign() async {
     final _user = FirebaseAuth.instance.currentUser;
     if (_user == null) {
-      return UserModel();
+      return UserModel(
+        groupCode: '',
+        name: '',
+        email: '',
+      );
     }
 
     final googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser!.authentication;
     return UserModel(
+        groupCode: '',
         email: _user.email.toString(),
         name: _user.displayName.toString(),
         token: googleAuth.idToken.toString());

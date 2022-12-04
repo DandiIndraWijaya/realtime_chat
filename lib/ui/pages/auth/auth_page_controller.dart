@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/models/user_model.dart';
 import 'package:realtime_chat/services/firebase_service.dart';
+import 'package:realtime_chat/services/user_service.dart';
 import 'package:realtime_chat/ui/pages/contacts/contacts_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,14 +31,27 @@ class AuthController extends GetxController {
     try {
       UserModel user = await FirebaseService().googleSignIn();
 
-      if (user.token != null) {
+      if (user.token != '') {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
-        await prefs.setString(
-            "user",
-            json.encode(
-                {"name": user.name, "email": user.email, "token": user.token}));
-        Get.off(() => ContactsPage(), transition: Transition.zoom);
+        try {
+          await UserService().setUser(user);
+          await prefs.setString(
+              "user",
+              json.encode({
+                "groupCode": user.groupCode,
+                "name": user.name,
+                "email": user.email,
+                "profilePicture": user.profilePicture,
+                "createdAt": user.createdAt,
+                "updatedAt": user.updatedAt,
+                "isSuspended": user.isSuspended,
+                "token": user.token
+              }));
+          Get.off(() => ContactsPage(), transition: Transition.zoom);
+        } catch (e) {
+          rethrow;
+        }
       } else {
         Get.snackbar(
           "Can't Login",

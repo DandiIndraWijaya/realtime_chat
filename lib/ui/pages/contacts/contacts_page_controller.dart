@@ -7,7 +7,11 @@ import 'package:realtime_chat/ui/pages/auth/auth_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactsPageController extends GetxController {
-  UserModel loggedInUser = UserModel();
+  UserModel loggedInUser = UserModel(
+    groupCode: '',
+    name: '',
+    email: '',
+  );
 
   @override
   void onInit() async {
@@ -28,7 +32,10 @@ class ContactsPageController extends GetxController {
     Map<String, dynamic> loggedInUserData =
         json.decode(loggedInUserStringData.toString());
     loggedInUser = UserModel(
-        name: loggedInUserData['name'], email: loggedInUserData['email']);
+      groupCode: 'Dandi',
+      name: loggedInUserData['name'],
+      email: loggedInUserData['email'],
+    );
     update();
   }
 }
