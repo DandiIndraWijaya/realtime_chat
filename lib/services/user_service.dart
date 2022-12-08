@@ -20,4 +20,17 @@ class UserService {
       rethrow;
     }
   }
+
+  Future checkIsUserAlreadySignIn(String email) async {
+    return _userReference
+        .where('email', isEqualTo: email)
+        .get()
+        .then((snapshot) {
+      snapshot.docs[0].data() as Map<String, dynamic>;
+
+      return true;
+    }).catchError((onError) {
+      return false;
+    });
+  }
 }

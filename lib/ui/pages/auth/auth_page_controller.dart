@@ -33,9 +33,12 @@ class AuthController extends GetxController {
 
       if (user.token != '') {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-
+        var isUserAlreadySignIn =
+            await UserService().checkIsUserAlreadySignIn(user.email);
         try {
-          await UserService().setUser(user);
+          if (isUserAlreadySignIn == false) {
+            await UserService().setUser(user);
+          }
           await prefs.setString(
               "user",
               json.encode({
