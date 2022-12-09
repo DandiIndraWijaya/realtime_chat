@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:realtime_chat/models/user_model.dart';
 import 'package:realtime_chat/shared/theme.dart';
 import 'package:realtime_chat/ui/pages/chat/chat_page.dart';
 import 'package:realtime_chat/ui/pages/contacts/contacts_page_controller.dart';
@@ -93,16 +94,16 @@ class ContactsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ContactsPageController>(
-        init: contactsPageController,
-        builder: (_) {
-          return Scaffold(
-            backgroundColor: kWhiteColor,
-            appBar: AppBar(
-              backgroundColor: kPrimaryColor,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              title: Row(
+    return Scaffold(
+      backgroundColor: kWhiteColor,
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: GetBuilder<ContactsPageController>(
+            init: contactsPageController,
+            builder: (_) {
+              return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(contactsPageController.loggedInUser.name.toString()),
@@ -111,25 +112,40 @@ class ContactsPage extends StatelessWidget {
                           contactsPageController.signOut();
                         },
                         icon: const Icon(Icons.logout))
-                  ]),
-            ),
-            body: ListView(
+                  ]);
+            }),
+      ),
+      body: GetBuilder<ContactsPageController>(
+          init: contactsPageController,
+          builder: (context) {
+            if (contactsPageController.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(color: kPrimaryColor),
+              );
+            } else if (contactsPageController.users.isEmpty) {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: 70,
+                    color: kGreyColor,
+                  ),
+                  Text(
+                    'Contact is Empty',
+                    style: greyTextStyle.copyWith(fontSize: 22),
+                  )
+                ],
+              ));
+            }
+            return ListView(
               children: [
-                contactTile(
-                    name: "Clara",
-                    picture:
-                        "https://images.unsplash.com/photo-1518577915332-c2a19f149a75?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=562&q=80"),
-                contactTile(
-                    name: "Jhon",
-                    picture:
-                        "https://images.unsplash.com/photo-1529068755536-a5ade0dcb4e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=581&q=80"),
-                contactTile(
-                    name: "Sita",
-                    picture:
-                        "https://images.unsplash.com/photo-1485893086445-ed75865251e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"),
+                for (UserModel user in contactsPageController.users)
+                  contactTile(name: user.name, picture: user.profilePicture)
               ],
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

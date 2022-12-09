@@ -19,4 +19,13 @@ class UserModel {
       this.updatedAt = 0,
       this.isSuspended = false,
       this.token = ''});
+
+  factory UserModel.fromJson(String id, Map<String, dynamic> json) => UserModel(
+      groupCode: json['groupCode'],
+      name: json['name'],
+      email: json['email'],
+      profilePicture: json['profilePicture'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      isSuspended: json['isSuspended']);
 }

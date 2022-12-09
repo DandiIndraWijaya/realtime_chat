@@ -11,9 +11,11 @@ Color kBGBlueColor = const Color(0xffCDF8FB);
 Color kGreyColor = const Color(0xff7B7373);
 Color kBGGreyColor = const Color(0xffE7ECEC);
 
+TextStyle primaryTextStyle = GoogleFonts.roboto(color: kPrimaryColor);
 TextStyle blackTextStyle = GoogleFonts.roboto(color: kBlackColor);
 TextStyle whiteTextStyle = GoogleFonts.roboto(color: kWhiteColor);
 TextStyle greyTextStyle = GoogleFonts.roboto(color: kGreyColor);
+TextStyle lightGreyTextStyle = GoogleFonts.roboto(color: kBGGreyColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;

@@ -33,22 +33,21 @@ class AuthController extends GetxController {
 
       if (user.token != '') {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        var isUserAlreadySignIn =
-            await UserService().checkIsUserAlreadySignIn(user.email);
+        var userInDb = await UserService().fetchUserInDb(user.email);
         try {
-          if (isUserAlreadySignIn == false) {
+          if (userInDb.email == '') {
             await UserService().setUser(user);
           }
           await prefs.setString(
               "user",
               json.encode({
-                "groupCode": user.groupCode,
-                "name": user.name,
-                "email": user.email,
-                "profilePicture": user.profilePicture,
-                "createdAt": user.createdAt,
-                "updatedAt": user.updatedAt,
-                "isSuspended": user.isSuspended,
+                "groupCode": userInDb.groupCode,
+                "name": userInDb.name,
+                "email": userInDb.email,
+                "profilePicture": userInDb.profilePicture,
+                "createdAt": userInDb.createdAt,
+                "updatedAt": userInDb.updatedAt,
+                "isSuspended": userInDb.isSuspended,
                 "token": user.token
               }));
           Get.off(() => ContactsPage(), transition: Transition.zoom);

@@ -21,16 +21,30 @@ class UserService {
     }
   }
 
-  Future checkIsUserAlreadySignIn(String email) async {
-    return _userReference
-        .where('email', isEqualTo: email)
-        .get()
-        .then((snapshot) {
-      snapshot.docs[0].data() as Map<String, dynamic>;
+  Future<UserModel> fetchUserInDb(String email) async {
+    try {
+      QuerySnapshot result =
+          await _userReference.where('email', isEqualTo: email).get();
+      UserModel userInDb = UserModel.fromJson(
+          result.docs[0].id, result.docs[0].data() as Map<String, dynamic>);
+      return userInDb;
+    } catch (onError) {
+      rethrow;
+    }
+    ;
+  }
 
-      return true;
-    }).catchError((onError) {
-      return false;
-    });
+  Future<List<UserModel>> fetchUsersByGroupCode(String groupCode) async {
+    try {
+      QuerySnapshot result =
+          await _userReference.where('groupCode', isEqualTo: groupCode).get();
+      List<UserModel> usersByGroupCode = result.docs.map((e) {
+        return UserModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+      }).toList();
+
+      return usersByGroupCode;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
