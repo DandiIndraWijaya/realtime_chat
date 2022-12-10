@@ -9,9 +9,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactsPageController extends GetxController {
   UserModel loggedInUser = UserModel(
+    id: '',
     groupCode: '',
     name: '',
     email: '',
+    friends: [],
   );
   List<UserModel> users = [];
   late bool isLoading;
@@ -28,14 +30,18 @@ class ContactsPageController extends GetxController {
     String? loggedInUserStringData = pref.getString('user');
     Map<String, dynamic> loggedInUserData =
         json.decode(loggedInUserStringData.toString());
-    print(loggedInUserData['groupCode']);
+
+    List<UserModel> friends = List<UserModel>.from(loggedInUserData['friends']);
+
     loggedInUser = UserModel(
-      groupCode: loggedInUserData['groupCode'],
-      name: loggedInUserData['name'],
-      email: loggedInUserData['email'],
-    );
+        id: loggedInUserData['id'],
+        groupCode: loggedInUserData['groupCode'],
+        name: loggedInUserData['name'],
+        email: loggedInUserData['email'],
+        friends: friends);
+    isLoading = false;
     update();
-    getUsersByGroupCode(loggedInUser.groupCode);
+    // getUsersByGroupCode(loggedInUser.groupCode);
   }
 
   Future<void> getUsersByGroupCode(String groupCode) async {

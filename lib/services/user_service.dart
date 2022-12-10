@@ -8,10 +8,12 @@ class UserService {
   Future<void> setUser(UserModel user) async {
     try {
       _userReference.doc().set({
+        'id': user.id,
         'groupCode': '1111',
         'name': user.name,
         'email': user.email,
         'profilePicture': user.profilePicture,
+        'friends': [],
         'createdAt': user.createdAt,
         'updatedAt': user.updatedAt,
         'isSuspended': user.isSuspended
@@ -25,6 +27,9 @@ class UserService {
     try {
       QuerySnapshot result =
           await _userReference.where('email', isEqualTo: email).get();
+      if (result.docs.isEmpty) {
+        return UserModel(id: '', groupCode: '', name: '', email: '');
+      }
       UserModel userInDb = UserModel.fromJson(
           result.docs[0].id, result.docs[0].data() as Map<String, dynamic>);
       return userInDb;

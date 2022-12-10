@@ -30,7 +30,6 @@ class AuthController extends GetxController {
   Future<void> handleGoogleSignIn() async {
     try {
       UserModel user = await FirebaseService().googleSignIn();
-
       if (user.token != '') {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userInDb = await UserService().fetchUserInDb(user.email);
@@ -41,13 +40,15 @@ class AuthController extends GetxController {
           await prefs.setString(
               "user",
               json.encode({
-                "groupCode": userInDb.groupCode,
-                "name": userInDb.name,
-                "email": userInDb.email,
-                "profilePicture": userInDb.profilePicture,
-                "createdAt": userInDb.createdAt,
-                "updatedAt": userInDb.updatedAt,
-                "isSuspended": userInDb.isSuspended,
+                "id": user.id,
+                "groupCode": '1111',
+                "name": user.name,
+                "email": user.email,
+                "profilePicture": user.profilePicture,
+                "friends": user.friends,
+                "createdAt": user.createdAt,
+                "updatedAt": user.updatedAt,
+                "isSuspended": user.isSuspended,
                 "token": user.token
               }));
           Get.off(() => ContactsPage(), transition: Transition.zoom);

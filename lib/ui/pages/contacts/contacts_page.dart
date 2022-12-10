@@ -21,8 +21,8 @@ class ContactsPage extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                  width: 60.0,
-                  height: 60.0,
+                  width: 55.0,
+                  height: 55.0,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -40,7 +40,7 @@ class ContactsPage extends StatelessWidget {
                         Text(
                           name,
                           style: blackTextStyle.copyWith(
-                              fontSize: 18, fontWeight: bold),
+                              fontSize: 16, fontWeight: bold),
                         ),
                         Text(
                           '09/10/2022',
@@ -50,7 +50,7 @@ class ContactsPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,7 +65,7 @@ class ContactsPage extends StatelessWidget {
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                                    const BorderRadius.all(Radius.circular(20)),
                                 color: kPrimaryColor),
                             child: Center(
                               child: Text('3',
@@ -106,7 +106,10 @@ class ContactsPage extends StatelessWidget {
               return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(contactsPageController.loggedInUser.name.toString()),
+                    Text(
+                      contactsPageController.loggedInUser.name.toString(),
+                      style: whiteTextStyle.copyWith(fontSize: 18),
+                    ),
                     IconButton(
                         onPressed: () {
                           contactsPageController.signOut();
@@ -122,7 +125,7 @@ class ContactsPage extends StatelessWidget {
               return Center(
                 child: CircularProgressIndicator(color: kPrimaryColor),
               );
-            } else if (contactsPageController.users.isEmpty) {
+            } else if (contactsPageController.loggedInUser.friends.isEmpty) {
               return Center(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -141,7 +144,8 @@ class ContactsPage extends StatelessWidget {
             }
             return ListView(
               children: [
-                for (UserModel user in contactsPageController.users)
+                for (UserModel user
+                    in contactsPageController.loggedInUser.friends)
                   contactTile(name: user.name, picture: user.profilePicture)
               ],
             );
