@@ -36,7 +36,6 @@ class UserService {
     } catch (onError) {
       rethrow;
     }
-    ;
   }
 
   Future<List<UserModel>> fetchUsersByGroupCode(String groupCode) async {

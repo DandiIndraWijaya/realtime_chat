@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/models/user_model.dart';
 import 'package:realtime_chat/shared/theme.dart';
+import 'package:realtime_chat/ui/pages/add_contact/add_contact_page.dart';
 import 'package:realtime_chat/ui/pages/chat/chat_page.dart';
 import 'package:realtime_chat/ui/pages/contacts/contacts_page_controller.dart';
 
@@ -103,11 +104,16 @@ class ContactsPage extends StatelessWidget {
         title: GetBuilder<ContactsPageController>(
             init: contactsPageController,
             builder: (_) {
+              UserModel? signedInUser = contactsPageController.loggedInUser;
+
               return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      contactsPageController.loggedInUser.name.toString(),
+                      signedInUser == null
+                          ? ''
+                          : contactsPageController.loggedInUser!.name
+                              .toString(),
                       style: whiteTextStyle.copyWith(fontSize: 18),
                     ),
                     IconButton(
@@ -125,29 +131,50 @@ class ContactsPage extends StatelessWidget {
               return Center(
                 child: CircularProgressIndicator(color: kPrimaryColor),
               );
-            } else if (contactsPageController.loggedInUser.friends.isEmpty) {
-              return Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.person,
-                    size: 70,
-                    color: kGreyColor,
-                  ),
-                  Text(
-                    'Contact is Empty',
-                    style: greyTextStyle.copyWith(fontSize: 22),
-                  )
-                ],
-              ));
             }
-            return ListView(
-              children: [
-                for (UserModel user
-                    in contactsPageController.loggedInUser.friends)
-                  contactTile(name: user.name, picture: user.profilePicture)
-              ],
+
+            if (contactsPageController.loggedInUser != null) {
+              if (contactsPageController.loggedInUser!.friends.isEmpty) {
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person,
+                      size: 70,
+                      color: kGreyColor,
+                    ),
+                    Text(
+                      'Contact is Empty',
+                      style: greyTextStyle.copyWith(fontSize: 22),
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: kPrimaryColor),
+                        onPressed: () {
+                          Get.to(() => AddContactPage(),
+                              transition: Transition.rightToLeft);
+                        },
+                        child: Text(
+                          '+ Add Contact',
+                          style: whiteTextStyle.copyWith(fontSize: 16),
+                        ))
+                  ],
+                ));
+              }
+              return ListView(
+                children: [
+                  for (UserModel user
+                      in contactsPageController.loggedInUser!.friends)
+                    contactTile(name: user.name, picture: user.profilePicture)
+                ],
+              );
+            }
+
+            return Center(
+              child: Text(
+                "Check Your Connection",
+                style: greyTextStyle.copyWith(fontSize: 18),
+              ),
             );
           }),
     );

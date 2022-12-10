@@ -14,7 +14,7 @@ class UserModel {
 
   UserModel(
       {required this.id,
-      required this.groupCode,
+      this.groupCode = '',
       required this.name,
       required this.email,
       this.profilePicture = '',
