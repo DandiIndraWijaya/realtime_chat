@@ -16,7 +16,7 @@ class UserHelper {
         groupCode: signedInUserData['groupCode'],
         name: signedInUserData['name'],
         email: signedInUserData['email'],
-        friends: List<UserModel>.from(signedInUserData['friends']));
+        friends: signedInUserData['friends']);
     return signedInUser;
   }
 }

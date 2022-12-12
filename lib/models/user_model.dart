@@ -6,7 +6,7 @@ class UserModel {
   late String name;
   late String email;
   late String profilePicture;
-  late List<UserModel> friends;
+  late List<dynamic> friends;
   late int createdAt;
   late int updatedAt;
   late bool isSuspended;
@@ -24,6 +24,10 @@ class UserModel {
       this.isSuspended = false,
       this.token = ''});
 
+  addFriend(friends) {
+    this.friends = friends;
+  }
+
   factory UserModel.fromJson(String id, Map<String, dynamic> json) => UserModel(
       id: id,
       groupCode: json['groupCode'],
@@ -32,5 +36,6 @@ class UserModel {
       profilePicture: json['profilePicture'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      isSuspended: json['isSuspended']);
+      isSuspended: json['isSuspended'],
+      friends: json['friends']);
 }

@@ -163,9 +163,10 @@ class ContactsPage extends StatelessWidget {
               }
               return ListView(
                 children: [
-                  for (UserModel user
+                  for (Map<String, dynamic> user
                       in contactsPageController.loggedInUser!.friends)
-                    contactTile(name: user.name, picture: user.profilePicture)
+                    contactTile(
+                        name: user['name'], picture: user['profilePicture'])
                 ],
               );
             }

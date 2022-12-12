@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:realtime_chat/helpers/userHelper.dart';
+import 'package:realtime_chat/helpers/user_helper.dart';
 import 'package:realtime_chat/models/user_model.dart';
 import 'package:realtime_chat/services/firebase_service.dart';
 import 'package:realtime_chat/services/user_service.dart';

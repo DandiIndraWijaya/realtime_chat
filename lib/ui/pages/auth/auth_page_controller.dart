@@ -36,21 +36,37 @@ class AuthController extends GetxController {
         try {
           if (userInDb.email == '') {
             await UserService().setUser(user);
+            await prefs.setString(
+                "user",
+                json.encode({
+                  "id": user.id,
+                  "groupCode": '1111',
+                  "name": user.name,
+                  "email": user.email,
+                  "profilePicture": user.profilePicture,
+                  "friends": user.friends,
+                  "createdAt": user.createdAt,
+                  "updatedAt": user.updatedAt,
+                  "isSuspended": user.isSuspended,
+                  "token": user.token
+                }));
+          } else {
+            await prefs.setString(
+                "user",
+                json.encode({
+                  "id": userInDb.id,
+                  "groupCode": '1111',
+                  "name": userInDb.name,
+                  "email": userInDb.email,
+                  "profilePicture": userInDb.profilePicture,
+                  "friends": userInDb.friends,
+                  "createdAt": userInDb.createdAt,
+                  "updatedAt": userInDb.updatedAt,
+                  "isSuspended": userInDb.isSuspended,
+                  "token": userInDb.token
+                }));
           }
-          await prefs.setString(
-              "user",
-              json.encode({
-                "id": user.id,
-                "groupCode": '1111',
-                "name": user.name,
-                "email": user.email,
-                "profilePicture": user.profilePicture,
-                "friends": user.friends,
-                "createdAt": user.createdAt,
-                "updatedAt": user.updatedAt,
-                "isSuspended": user.isSuspended,
-                "token": user.token
-              }));
+
           Get.off(() => ContactsPage(), transition: Transition.zoom);
         } catch (e) {
           rethrow;

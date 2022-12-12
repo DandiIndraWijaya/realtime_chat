@@ -10,6 +10,7 @@ Color kPrimaryColor = const Color(0xff71F0F9);
 Color kBGBlueColor = const Color(0xffCDF8FB);
 Color kGreyColor = const Color(0xff7B7373);
 Color kBGGreyColor = const Color(0xffE7ECEC);
+Color kRedColor = const Color(0xffe60000);
 
 TextStyle primaryTextStyle = GoogleFonts.roboto(color: kPrimaryColor);
 TextStyle blackTextStyle = GoogleFonts.roboto(color: kBlackColor);
