@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:realtime_chat/helpers/user_helper.dart';
 import 'package:realtime_chat/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   final CollectionReference _userReference =
@@ -32,8 +34,10 @@ class UserService {
       if (result.docs.isEmpty) {
         return UserModel(id: '', groupCode: '', name: '', email: '');
       }
-      UserModel userInDb = UserModel.fromJson(
-          result.docs[0].id, result.docs[0].data() as Map<String, dynamic>);
+
+      Map<String, dynamic> resultJson =
+          result.docs[0].data() as Map<String, dynamic>;
+      UserModel userInDb = UserModel.fromJson(resultJson['id'], resultJson);
       return userInDb;
     } catch (onError) {
       rethrow;
@@ -56,7 +60,8 @@ class UserService {
     }
   }
 
-  Future<void> updateUserFriendsById(String id, UserModel friend) async {
+  Future<void> updateUserFriendsById(
+      String id, UserModel friend, String chatUid) async {
     QuerySnapshot signedInUser =
         await _userReference.where('id', isEqualTo: id).get();
 
@@ -74,15 +79,32 @@ class UserService {
         "profilePicture": friend.profilePicture,
         "name": friend.name,
         "email": friend.email,
+        "chatUid": chatUid,
         "groupCode": friend.groupCode,
         "isSuspended": friend.isSuspended,
       }
     ];
     await _userReference
         .doc(signedInUser.docs[0].id)
-        .update({"friends": updatedsignedInUserFriends})
-        .then((_) => print('Success'))
-        .catchError((error) => print('Failed: $error'));
+        .update({"friends": updatedsignedInUserFriends}).then((_) async {
+      UserModel? signedUser = await UserHelper().getSignedUser();
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+          "user",
+          json.encode({
+            "id": signedUser!.id,
+            "groupCode": '1111',
+            "name": signedUser.name,
+            "email": signedUser.email,
+            "profilePicture": signedUser.profilePicture,
+            "friends": updatedsignedInUserFriends,
+            "createdAt": signedUser.createdAt,
+            "updatedAt": signedUser.updatedAt,
+            "isSuspended": signedUser.isSuspended,
+            "token": signedUser.token
+          }));
+    }).catchError((error) => print('Failed: $error'));
   }
 
   Future<List<UserModel>> fetchUsersByGroupCode(String groupCode) async {

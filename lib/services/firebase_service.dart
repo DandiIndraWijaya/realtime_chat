@@ -24,7 +24,6 @@ class FirebaseService {
     await FirebaseAuth.instance.signInWithCredential(credential);
 
     List<String> splitedEmail = _user!.email.toString().split("@");
-    String userId = splitedEmail[0];
 
     return UserModel(
         id: splitedEmail[0],
