@@ -21,10 +21,6 @@ class ChatPageController extends GetxController {
     update();
   }
 
-  // void onChangedTypedMessage(String message) {
-  //   typedMessage.text = message;
-  // }
-
   void sendMessage(String chatUid) {
     if (typedMessage.text == '' || chatUid == '') return;
 

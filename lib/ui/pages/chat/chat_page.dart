@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:realtime_chat/helpers/chat_messages_sort.dart';
 import 'package:realtime_chat/models/chat_message.dart';
 import 'package:realtime_chat/models/chat_message_stream_publisher.dart';
 import 'package:realtime_chat/shared/theme.dart';
@@ -84,10 +85,12 @@ class ChatPage extends StatelessWidget {
                       builder: (context, snapshot) {
                         final List<ChatMessage> chatMessages;
                         if (snapshot.hasData) {
-                          chatMessages = snapshot.data as List<ChatMessage>;
+                          chatMessages =
+                              runQuickSort(snapshot.data as List<ChatMessage>);
                         } else {
                           chatMessages = [];
                         }
+
                         return ListView.builder(
                             controller: _scrollController,
                             itemCount: chatMessages.length,

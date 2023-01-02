@@ -7,6 +7,7 @@ class ChatMessage extends ChangeNotifier {
   late String messageDate;
   late String messageTime;
   late String sentBy;
+  late int timestamp;
   late bool isDeleted;
 
   ChatMessage(
@@ -14,7 +15,8 @@ class ChatMessage extends ChangeNotifier {
       required this.messageDate,
       required this.messageTime,
       required this.sentBy,
-      required this.isDeleted});
+      required this.isDeleted,
+      required this.timestamp});
 
   factory ChatMessage.fromRTDB(Map<String, dynamic> data) {
     return ChatMessage(
@@ -22,6 +24,7 @@ class ChatMessage extends ChangeNotifier {
         messageDate: data['messageDate'],
         messageTime: data['messageTime'],
         sentBy: data['sentBy'],
-        isDeleted: data['isDeleted']);
+        isDeleted: data['isDeleted'],
+        timestamp: data['timestamp']);
   }
 }

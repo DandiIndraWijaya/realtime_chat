@@ -5,10 +5,13 @@ class ChatMessageStreamPublisher {
   final _database = FirebaseDatabase.instance;
 
   Stream<List<ChatMessage>> getChatMessageStream(String chatUid) {
-    final chatMessageStream = _database.ref('/chatMessages/$chatUid').onValue;
+    final chatMessageStream = _database
+        .ref('/chatMessages')
+        .child('/$chatUid')
+        .orderByChild('timestamp')
+        .onValue;
 
     final streamToPublish = chatMessageStream.map((event) {
-      print(event.snapshot.value.toString());
       final chatMessageMap = Map<String, dynamic>.from(
           event.snapshot.value as Map<dynamic, dynamic>);
       final chatMessageList = chatMessageMap.entries.map((element) {
