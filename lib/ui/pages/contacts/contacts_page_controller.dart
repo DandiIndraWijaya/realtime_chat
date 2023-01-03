@@ -36,6 +36,10 @@ class ContactsPageController extends GetxController {
     }
   }
 
+  void checkChatsInLocalStorage() {}
+
+  void downloadChats() {}
+
   Future<void> signOut() async {
     await FirebaseService().googleSignOut();
     SharedPreferences prefs = await SharedPreferences.getInstance();
