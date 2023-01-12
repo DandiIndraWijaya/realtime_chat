@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/helpers/chat_messages_sort.dart';
-import 'package:realtime_chat/models/chat_message.dart';
+import 'package:realtime_chat/models/chat_message_model.dart';
 import 'package:realtime_chat/models/chat_message_stream_publisher.dart';
 import 'package:realtime_chat/shared/theme.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';

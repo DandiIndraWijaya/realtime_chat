@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:realtime_chat/helpers/user_helper.dart';
-import 'package:realtime_chat/models/chat_message.dart';
+import 'package:realtime_chat/models/chat_message_model.dart';
 import 'package:realtime_chat/models/user_model.dart';
 import 'package:realtime_chat/services/chat_service.dart';
 

@@ -6,7 +6,7 @@
 //   print(result);
 // }
 
-import 'package:realtime_chat/models/chat_message.dart';
+import 'package:realtime_chat/models/chat_message_model.dart';
 
 // sort chat messages using quicksort algorithm
 List<ChatMessage> runQuickSort(List<ChatMessage> chatMessages) {

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:realtime_chat/helpers/user_helper.dart';
 import 'package:realtime_chat/models/chat_model.dart';
 import 'package:realtime_chat/models/user_model.dart';
+import 'package:realtime_chat/services/chat_service.dart';
 import 'package:realtime_chat/services/user_service.dart';
 
 class AddContactPageController extends GetxController {
@@ -48,12 +49,12 @@ class AddContactPageController extends GetxController {
       }
     }
 
-    ChatModel().createChat(
+    ChatService().createChat(
         [signedInUser!.id, addedUserIdData.id],
         DateTime.now().millisecondsSinceEpoch,
         DateTime.now().millisecondsSinceEpoch);
 
-    String chatUid = await ChatModel()
+    String chatUid = await ChatService()
         .getChatUIDByMembers([signedInUser!.id, addedUserIdData.id]);
 
     UserService()

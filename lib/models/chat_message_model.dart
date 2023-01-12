@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class ChatMessage extends ChangeNotifier {
   final _db = FirebaseDatabase.instance;
+  late String chatUid;
   late String message;
   late String messageDate;
   late String messageTime;
@@ -11,15 +12,17 @@ class ChatMessage extends ChangeNotifier {
   late bool isDeleted;
 
   ChatMessage(
-      {required this.message,
+      {required this.chatUid,
+      required this.message,
       required this.messageDate,
       required this.messageTime,
       required this.sentBy,
       required this.isDeleted,
       required this.timestamp});
 
-  factory ChatMessage.fromRTDB(Map<String, dynamic> data) {
+  factory ChatMessage.fromRTDB(String chatUid, Map<String, dynamic> data) {
     return ChatMessage(
+        chatUid: chatUid,
         message: data['message'],
         messageDate: data['messageDate'],
         messageTime: data['messageTime'],
