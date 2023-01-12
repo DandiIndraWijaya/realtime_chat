@@ -37,19 +37,18 @@ class ChatService {
   }
 
   Future<List<ChatMessage>> getChatMessageList(String chatUid) async {
-    final chatMessageSnapshot = await _db.ref("/chatMessages/$chatUid").get();
+    final chatMessageListData =
+        await _db.ref("/chatMessages/$chatUid").once().then((event) {
+      final chatMessageMap = Map<String, dynamic>.from(
+          event.snapshot.value as Map<dynamic, dynamic>);
+      final chatMessageList = chatMessageMap.entries.map((element) {
+        return ChatMessage.fromRTDB(
+            chatUid, Map<String, dynamic>.from(element.value));
+      }).toList();
+      return chatMessageList;
+    });
 
-    Map<String, dynamic> chatMessagesMap = Map<String, dynamic>.from(
-        chatMessageSnapshot.value as Map<dynamic, dynamic>);
-
-    List<ChatMessage> chatMessageList = [];
-    for (var key in chatMessagesMap.keys) {
-      ChatMessage chatMessage =
-          ChatMessage.fromRTDB(chatUid, chatMessagesMap[key]);
-      chatMessageList.add(chatMessage);
-    }
-
-    return chatMessageList;
+    return chatMessageListData;
   }
 
   // storeChatMessagesToLocal() {

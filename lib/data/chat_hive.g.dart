@@ -18,18 +18,30 @@ class ChatHiveAdapter extends TypeAdapter<ChatHive> {
     };
     return ChatHive(
       uid: fields[0] as String,
-      chatList: (fields[1] as List).cast<Chat>(),
+      members: (fields[1] as List).cast<String>(),
+      lastMessageSent: fields[2] as String,
+      isDeleted: fields[3] as bool,
+      createdAt: fields[4] as int,
+      updatedAt: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatHive obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
-      ..write(obj.chatList);
+      ..write(obj.members)
+      ..writeByte(2)
+      ..write(obj.lastMessageSent)
+      ..writeByte(3)
+      ..write(obj.isDeleted)
+      ..writeByte(4)
+      ..write(obj.createdAt)
+      ..writeByte(5)
+      ..write(obj.updatedAt);
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:realtime_chat/data/chat_hive.dart';
 import 'package:realtime_chat/data/chat_message_hive.dart';
 import 'package:realtime_chat/helpers/chat_messages_sort.dart';
 import 'package:realtime_chat/helpers/user_helper.dart';
@@ -17,6 +18,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactsPageController extends GetxController {
   UserModel? loggedInUser;
+  Box<ChatMessageHive> chatMessageHive = Hive.box('chat_message');
+  Box<ChatHive> chatHive = Hive.box<ChatHive>('chat');
 
   List<UserModel> users = [];
   late bool isLoading;
@@ -25,7 +28,13 @@ class ContactsPageController extends GetxController {
   void onInit() async {
     isLoading = true;
     getLoggedInUser();
-    checkChatsInLocalStorage();
+
+    bool isChatInLocalStorage = await checkChatsInLocalStorage();
+
+    if (!isChatInLocalStorage) {
+      downloadAllChatDataToLocalStorage();
+    }
+
     super.onInit();
   }
 
@@ -43,36 +52,47 @@ class ContactsPageController extends GetxController {
     }
   }
 
-  void checkChatsInLocalStorage() async {
-    var chatMessageHive = await Hive.openBox('chat_message');
-    var chatHive = await Hive.openBox('chat');
+  Future<bool> checkChatsInLocalStorage() async {
+    chatMessageHive = Hive.box('chat_message');
+    chatHive = Hive.box('chat');
+
+    chatMessageHive.toMap();
+
     if (chatMessageHive.isEmpty || chatHive.isEmpty) {
-      storeAllChatDataToLocal();
+      return false;
     }
+    return true;
   }
 
-  void storeAllChatDataToLocal() async {
-    Box<ChatMessageHive> chatMessageHive =
-        await Hive.openBox<ChatMessageHive>('chat_message');
-    var chatHive = await Hive.openBox('chat');
-
+  void downloadAllChatDataToLocalStorage() async {
     // Store all chat from realtime database to local
     List<Chat> chatList = await ChatService().getChatList();
+
     for (Chat chat in chatList) {
-      chatHive.add({'uid': chat.uid, 'chats': chat});
+      chatHive.add(ChatHive(
+          uid: chat.uid,
+          members: chat.members,
+          isDeleted: chat.isDeleted,
+          lastMessageSent: chat.lastMessageSent,
+          createdAt: chat.createdAt,
+          updatedAt: chat.updatedAt));
 
       List<ChatMessage> chatMessageList =
           await ChatService().getChatMessageList(chat.uid);
 
       List<ChatMessage> sortedChatMessageList = runQuickSort(chatMessageList);
 
-      chatMessageHive.add(
-          ChatMessageHive(uid: chat.uid, messageList: sortedChatMessageList));
+      for (ChatMessage chatMessage in sortedChatMessageList) {
+        chatMessageHive.add(ChatMessageHive(
+            chatUid: chat.uid,
+            message: chatMessage.message,
+            isDeleted: chatMessage.isDeleted,
+            messageDate: chatMessage.messageDate,
+            messageTime: chatMessage.messageTime,
+            sentBy: chatMessage.sentBy,
+            timestamp: chatMessage.timestamp));
+      }
     }
-
-    // Store all chat message from realtime database to local
-
-    // ChatService().storeChatMessagesToLocal();
   }
 
   Future<void> signOut() async {

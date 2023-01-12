@@ -1,8 +1,6 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatMessage extends ChangeNotifier {
-  final _db = FirebaseDatabase.instance;
   late String chatUid;
   late String message;
   late String messageDate;

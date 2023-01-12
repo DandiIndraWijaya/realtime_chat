@@ -42,6 +42,7 @@ class DbService {
     Hive.registerAdapter(ChatMessageHiveAdapter());
     Hive.registerAdapter(ChatHiveAdapter());
 
-    await Hive.openBox('chat_message');
+    await Hive.openBox<ChatMessageHive>('chat_message');
+    await Hive.openBox<ChatHive>('chat');
   }
 }
